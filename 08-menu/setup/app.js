@@ -74,10 +74,35 @@ const menu = [
 ];
 
 const sectionCenter=document.querySelector('.section-center')
+const btn=document.querySelectorAll('.filter-btn')
+
 
 window.addEventListener("DOMContentLoaded",()=>{
+  
   displayMenuItems(menu);
+
 })
+
+
+btn.forEach((btn)=>{
+  btn.addEventListener("click", (e) => {
+
+const Target=e.currentTarget.dataset.id;
+const menuTarget=menu.filter((menuItem)=> {
+  if(menuItem.category===Target){
+   
+    return menuItem
+  }
+})
+// console.log(menuTarget)
+if(Target==="all"){
+  displayMenuItems(menu);
+}else
+{
+  displayMenuItems(menuTarget);
+}
+  })
+  })
 
 const displayMenuItems=(menuItems)=>{
   let displayMenu=menuItems.map((item)=>{
