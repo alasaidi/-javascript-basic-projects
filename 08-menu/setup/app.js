@@ -1,3 +1,7 @@
+/**
+ * An array of menu items with properties such as id, title, category, price, image, and description.
+ * @type {Array<Object>}
+ */
 const menu = [
   {
     id: 1,
@@ -81,15 +85,24 @@ const menu = [
   },
 ];
 
+// Select the section center element and the button container element
 const sectionCenter = document.querySelector(".section-center");
 const container = document.querySelector(".btn-container");
 
+/**
+ * When the DOM content is loaded, call the displayMenuItems and displayMenuButtons functions.
+ */
 window.addEventListener("DOMContentLoaded", () => {
   displayMenuItems(menu);
-  displayMenuButtons(menu)
+  displayMenuButtons(menu);
 });
 
+/**
+ * This function takes an array of menu items and displays them in the section center.
+ * @param {Array<Object>} menuItems - An array of menu item objects.
+ */
 const displayMenuItems = (menuItems) => {
+  // Map over the menu items array and create an HTML element for each item
   let displayMenu = menuItems.map((item) => {
     return `<article class="menu-item">
     <img src=${item.img} alt="photo" alt=${item.title}>
@@ -101,44 +114,55 @@ const displayMenuItems = (menuItems) => {
     <p class="item-text">${item.desc}</div>
   </article>`;
   });
+
+  // Join the HTML elements into a single string and set it as the innerHTML of the section center
   displayMenu = displayMenu.join("");
   sectionCenter.innerHTML = displayMenu;
 };
 
+/**
+ * This function displays the category buttons in the button container.
+ */
 const displayMenuButtons = () => {
+  // Get an array of unique categories from the menu items
   const categories = menu.reduce(
     (values, item) => {
       if (!values.includes(item.category)) {
         values.push(item.category);
       }
       console.log(values);
-
       return values;
     },
     ["all"]
   );
 
+  // Create an HTML button element for each category
   const categoryBtns = categories
     .map((category) => {
-      return ` <button class="filter-btn" type="button" data-id=${category}>${category}</button>`;
+      return `<button class="filter-btn" type="button" data-id=${category}>${category}</button>`;
     })
     .join("");
 
+  // Set the HTML buttons as the innerHTML of the button container
   container.innerHTML = categoryBtns;
-  const btn = document.querySelectorAll(".filter-btn");
 
+  // Add a click event listener to each button
+  const btn = document.querySelectorAll(".filter-btn");
   btn.forEach((btn) => {
     btn.addEventListener("click", (e) => {
       const Target = e.currentTarget.dataset.id;
+      // Filter the menu items based on the clicked category
       const menuTarget = menu.filter((menuItem) => {
         if (menuItem.category === Target) {
           return menuItem;
         }
       });
-      // console.log(menuTarget)
+
+      // If the "all" category is clicked, display all menu items
       if (Target === "all") {
         displayMenuItems(menu);
       } else {
+        // Otherwise, display only the filtered menu items
         displayMenuItems(menuTarget);
       }
     });
