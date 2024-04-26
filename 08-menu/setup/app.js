@@ -71,41 +71,26 @@ const menu = [
     img: "./images/item-9.jpeg",
     desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
   },
+  {
+    id: 10,
+    title: "steak de boeuf",
+    category: "dinner",
+    price: 16.99,
+    img: "./images/item-10.jpeg",
+    desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
+  },
 ];
 
-const sectionCenter=document.querySelector('.section-center')
-const btn=document.querySelectorAll('.filter-btn')
+const sectionCenter = document.querySelector(".section-center");
+const container = document.querySelector(".btn-container");
 
-
-window.addEventListener("DOMContentLoaded",()=>{
-  
+window.addEventListener("DOMContentLoaded", () => {
   displayMenuItems(menu);
+  displayMenuButtons(menu)
+});
 
-})
-
-
-btn.forEach((btn)=>{
-  btn.addEventListener("click", (e) => {
-
-const Target=e.currentTarget.dataset.id;
-const menuTarget=menu.filter((menuItem)=> {
-  if(menuItem.category===Target){
-   
-    return menuItem
-  }
-})
-// console.log(menuTarget)
-if(Target==="all"){
-  displayMenuItems(menu);
-}else
-{
-  displayMenuItems(menuTarget);
-}
-  })
-  })
-
-const displayMenuItems=(menuItems)=>{
-  let displayMenu=menuItems.map((item)=>{
+const displayMenuItems = (menuItems) => {
+  let displayMenu = menuItems.map((item) => {
     return `<article class="menu-item">
     <img src=${item.img} alt="photo" alt=${item.title}>
     <div class="item-info">
@@ -114,8 +99,48 @@ const displayMenuItems=(menuItems)=>{
       <h4 class="price">$${item.price}</h4>
     </header>
     <p class="item-text">${item.desc}</div>
-  </article>`
-  })
-  displayMenu=displayMenu.join("")
-  sectionCenter.innerHTML=displayMenu;
-}
+  </article>`;
+  });
+  displayMenu = displayMenu.join("");
+  sectionCenter.innerHTML = displayMenu;
+};
+
+const displayMenuButtons = () => {
+  const categories = menu.reduce(
+    (values, item) => {
+      if (!values.includes(item.category)) {
+        values.push(item.category);
+      }
+      console.log(values);
+
+      return values;
+    },
+    ["all"]
+  );
+
+  const categoryBtns = categories
+    .map((category) => {
+      return ` <button class="filter-btn" type="button" data-id=${category}>${category}</button>`;
+    })
+    .join("");
+
+  container.innerHTML = categoryBtns;
+  const btn = document.querySelectorAll(".filter-btn");
+
+  btn.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      const Target = e.currentTarget.dataset.id;
+      const menuTarget = menu.filter((menuItem) => {
+        if (menuItem.category === Target) {
+          return menuItem;
+        }
+      });
+      // console.log(menuTarget)
+      if (Target === "all") {
+        displayMenuItems(menu);
+      } else {
+        displayMenuItems(menuTarget);
+      }
+    });
+  });
+};
