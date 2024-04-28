@@ -60,5 +60,52 @@ window.addEventListener("scroll", () => {
 });
 
 // ********** smooth scroll ************
-
 // select links
+// Select all elements with the class "scroll-link"
+const scrollLinks = document.querySelectorAll(".scroll-link");
+
+// Loop through each scroll link
+scrollLinks.forEach((link) => {
+  // Add a click event listener to each link
+  link.addEventListener("click", (e) => {
+    // Prevent the default link behavior
+    e.preventDefault();
+
+    // Get the ID of the target element from the link's href attribute
+    const id = e.currentTarget.getAttribute("href").slice(1);
+
+    // Select the target element using the ID
+    const element = document.getElementById(id);
+
+    // Get the height of the navigation bar
+    const navHeight = navbar.getBoundingClientRect().height;
+
+    // Get the height of the links container
+    const containerHeight = linksContainer.getBoundingClientRect().height;
+
+    // Check if the navigation bar has the "fixed-nav" class
+    const fixedNav = navbar.classList.contains("fixed-nav");
+
+    // Calculate the scroll position based on the target element's offset and navigation bar height
+    let position = element.offsetTop - navHeight;
+
+    // If the navigation bar is not fixed, adjust the scroll position
+    if (!fixedNav) {
+      position = position - navHeight;
+    }
+
+    // If the navigation bar height is greater than 82 pixels, adjust the scroll position
+    if (navHeight > 82) {
+      position = position + containerHeight;
+    }
+
+    // Scroll to the calculated position
+    window.scrollTo({
+      left: 0,
+      top: position,
+    });
+
+    // Reset the height of the links container
+    linksContainer.style.height = 0;
+  });
+});
